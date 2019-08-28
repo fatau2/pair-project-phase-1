@@ -10,12 +10,10 @@
     <h1>
         Upload gambar
     </h1>
-    <form method="post" action="upload-gambar">
-        <label>Upload gambar disini:</label><br>
-        <label>Nama gambar:</label>
-        <input type="text" name="nama"/>
-        <label>Path gambar:</label>
-        <input type="file" name="path"/>
+    <form method="post" action="<%= image.id %>">
+        <label>Ganti nama gambar disini:</label><br>
+        <label>Ganti nama gambar:</label>
+        <input type="text" name="nama" value="<%= image.name %>"/>
         <input type="submit" />
     </form>
 </body>
