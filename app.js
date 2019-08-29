@@ -95,7 +95,7 @@ app.post('/images/upload-gambar', upload.single('path'), (req, res) => {
     }   
 });
 
-/* app.get("/", express.static(path.join(__dirname, "./views")));
-app.get("/", express.static(path.join(__dirname, "./public"))); */
+// app.get("/", express.static(path.join(__dirname, "./views")));
+
 
 app.listen(port, () => console.log(`Example app listening on port ${3001}!`));
