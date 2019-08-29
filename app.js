@@ -5,6 +5,7 @@ const fs = require('fs');
 let express = require('express');
 let bodyParser = require('body-parser');
 var multer = require('multer');
+const port = process.env.PORT || 3001;
 
 let app = express();
 
@@ -97,4 +98,4 @@ app.post('/images/upload-gambar', upload.single('path'), (req, res) => {
 /* app.get("/", express.static(path.join(__dirname, "./views")));
 app.get("/", express.static(path.join(__dirname, "./public"))); */
 
-app.listen(3001, () => console.log('Example app listening on port 3001!'));
+app.listen(port, () => console.log(`Example app listening on port ${3001}!`));
