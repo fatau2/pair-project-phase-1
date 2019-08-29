@@ -71,22 +71,27 @@ app.get('/images/delete/:id', (req,res) => {
 });
 
 app.post('/images/upload-gambar', upload.single('path'), (req, res) => {
-    //res.send(req.file.path)
-    models.Image.create({
-        name: req.body.nama,
-        source: fs.readFileSync(req.file.path),
-        createdAt : new Date(),
-        updatedAt : new Date()
-    }).then(() =>{
-        /* let img = new Buffer(image.source).toString('base64');
-        res.render('index', {image, img}); */
-        models.Image.findAll().then((images =>{
-            images.forEach(image => {
-                image.source = new Buffer(image.source).toString('base64');
-            });
-            res.render('daftar-gambar', {images});
-        }))
-    })  
+    let type = req.file.mimetype.split('/')[0];
+    //res.send(type);
+    if (type !== 'image'){
+        res.send("file is not an image!");
+    } else {
+        models.Image.create({
+            name: req.body.nama,
+            source: fs.readFileSync(req.file.path),
+            createdAt : new Date(),
+            updatedAt : new Date()
+        }).then(() =>{
+             //let img = new Buffer(image.source).toString('base64');
+            //res.render('index', {image, img}); 
+            models.Image.findAll().then((images =>{
+                images.forEach(image => {
+                    image.source = new Buffer(image.source).toString('base64');
+                });
+                res.render('daftar-gambar', {images});
+            }))
+        }) 
+    }   
 });
 
 /* app.get("/", express.static(path.join(__dirname, "./views")));
