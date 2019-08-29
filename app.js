@@ -4,12 +4,18 @@ const models = require('./models');
 const fs = require('fs');
 let express = require('express');
 let bodyParser = require('body-parser');
+var multer = require('multer');
+
 let app = express();
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+const upload = multer({
+    dest: "images/"
+  });
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -64,16 +70,26 @@ app.get('/images/delete/:id', (req,res) => {
     })
 });
 
-app.post('/images/upload-gambar', (req, res) => {
+app.post('/images/upload-gambar', upload.single('path'), (req, res) => {
+    //res.send(req.file.path)
     models.Image.create({
         name: req.body.nama,
-        source: fs.readFileSync(req.body.path),
+        source: fs.readFileSync(req.file.path),
         createdAt : new Date(),
         updatedAt : new Date()
-    }).then((image =>{
-        let img = new Buffer(image.source).toString('base64');
-        res.render('index', {image, img});
-    }))
+    }).then(() =>{
+        /* let img = new Buffer(image.source).toString('base64');
+        res.render('index', {image, img}); */
+        models.Image.findAll().then((images =>{
+            images.forEach(image => {
+                image.source = new Buffer(image.source).toString('base64');
+            });
+            res.render('daftar-gambar', {images});
+        }))
+    })  
 });
+
+/* app.get("/", express.static(path.join(__dirname, "./views")));
+app.get("/", express.static(path.join(__dirname, "./public"))); */
 
 app.listen(3001, () => console.log('Example app listening on port 3001!'));
